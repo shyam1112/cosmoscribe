@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart'; // Import the HomeScreen class
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Your App Name',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MainScreen(), // Set MainScreen as the initial screen
+    );
+  }
+}
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -10,11 +28,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    const Scaffold(
-      body: Center(
-        child: Text('Page 1 Content'),
-      ),
-    ),
+    HomeScreen(), // Use the HomeScreen widget as the first item
     const Scaffold(
       body: Center(
         child: Text('Page 2 Content'),
@@ -36,6 +50,13 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _selectedIndex = index;
     });
+
+    // If the Home Screen is selected, set it as the default screen.
+    if (index == 0) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ));
+    }
   }
 
   @override

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +14,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? neoData;
   bool isLoading = false;
   String errorMessage = '';
+
+  // Replace with your actual NASA API key
+  const String demoKey = "DEMO_KEY";
 
   Future<void> _selectStartDate(BuildContext context) async {
     final picked = await showDatePicker(
@@ -47,11 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchNeoData(DateTime startDate, DateTime endDate) async {
-    // Replace with your actual NASA API key
     final formattedStartDate = startDate.toLocal().toString().split(' ')[0];
     final formattedEndDate = endDate.toLocal().toString().split(' ')[0];
 
-    const demoKey="DEMO_KEY";
     final url =
         'https://api.nasa.gov/neo/rest/v1/feed?start_date=$formattedStartDate&end_date=$formattedEndDate&api_key=$demoKey';
 
@@ -130,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () {
                     // Call the API with selected start and end dates
-
                     if ((startDate == null && endDate == null) ||
                         (startDate == null && endDate != null) ||
                         (startDate != null && endDate == null)) {
@@ -140,9 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
 
                     if (startDate != null && endDate != null) {
-                      if (startDate!.day - endDate!.day > 7) {
+                      if (startDate!.isAfter(endDate!)) {
                         Fluttertoast.showToast(
-                          msg: 'Date difference should be less than 7',
+                          msg: 'Start Date cannot be after End Date',
                         );
                       } else {
                         fetchNeoData(startDate!, endDate!);
@@ -185,9 +184,8 @@ class NeoDataWidget extends StatelessWidget {
           style: TextStyle(fontSize: 16));
     }
 
-    // Extract the NEO data from the fetched JSON response
     final neoElements = neoData!['near_earth_objects'];
-    final dateKeys = neoElements.keys.toList(); // Get the date keys
+    final dateKeys = neoElements.keys.toList();
 
     return Column(
       children: [
