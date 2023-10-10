@@ -13,51 +13,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(), // Set MainScreen as the initial screen
+      home: HomeScreen(), // Set HomeScreen as the initial screen
     );
   }
 }
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
-
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
-  final List<Widget> _pages = [
-    HomeScreen(), // Use the HomeScreen widget as the first item
-    const Scaffold(
-      body: Center(
-        child: Text('Page 2 Content'),
-      ),
-    ),
-    const Scaffold(
-      body: Center(
-        child: Text('Page 3 Content'),
-      ),
-    ),
-    const Scaffold(
-      body: Center(
-        child: Text('Page 4 Content'),
-      ),
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    // If the Home Screen is selected, set it as the default screen.
-    if (index == 0) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +27,9 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: const Text('Main Screen'),
       ),
-      body: _pages[_selectedIndex],
+      body: Center(
+        child: Text('This is the Main Screen content'),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -73,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
               Icons.home,
               color: Colors.black,
             ),
-            label: 'Page 1',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -97,9 +61,8 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Page 4',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: 0, // Set the default screen as Home
         selectedItemColor: Colors.black,
-        onTap: _onItemTapped,
       ),
     );
   }
